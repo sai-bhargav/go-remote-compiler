@@ -11,7 +11,7 @@ import (
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/health", controllers.Health).Methods("GET")
+	router.HandleFunc("/health", controllers.HealthHandler).Methods("GET")
 	router.HandleFunc("/compile", controllers.CompileHandler).Methods("POST")
 	router.HandleFunc("/status/{id}", controllers.StatusHandler).Methods("GET")
 

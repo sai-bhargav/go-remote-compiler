@@ -9,7 +9,7 @@ type HealthResponse struct {
 	Message string
 }
 
-func Health(w http.ResponseWriter, r *http.Request) {
+func HealthHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := HealthResponse{}
 	data.Message = "Remote code compiler is healthy"
