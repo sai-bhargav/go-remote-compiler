@@ -14,7 +14,7 @@ type Sandbox struct {
 	Language   string `json:"lang"`
 	Code       string `json:"code"`
 	TestCases  string `json:"tc"`
-	Identifier string `json:"identifier"`
+	Identifier string `json:"id"`
 	Command    string
 }
 
@@ -22,7 +22,7 @@ func Run(sandbox Sandbox) string {
 
 	prepare(&sandbox)
 	out := execute(sandbox)
-	cleanup()
+	postProcessor(out, sandbox)
 
 	return out
 }
@@ -109,6 +109,26 @@ func createVolume(sandbox *Sandbox) {
 	}
 }
 
-func cleanup() {
-	// to be implemented
+func postProcessor(output string, sandbox Sandbox) {
+
+	pwd, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+
+	requestVolume := fmt.Sprintf("%s/payloads/%s", pwd, sandbox.Identifier)
+
+	codeFilePath := fmt.Sprintf("%s/output.%s", requestVolume, "txt")
+
+	codeFile, err := os.Create(codeFilePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer codeFile.Close()
+
+	_, err = codeFile.WriteString(output)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }

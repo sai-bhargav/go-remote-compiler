@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	dockersandbox "remote-code-compiler/services"
+	dockersandbox "remote-code-compiler/dockersandbox"
 )
 
 type CodeResponse struct {
-	Message string
+	Status string
 }
 
 type RequestPayload struct {
@@ -27,10 +27,9 @@ func CompileHandler(w http.ResponseWriter, request *http.Request) {
 		panic(err)
 	}
 
-	out := dockersandbox.Run(sandbox)
+	go dockersandbox.Run(sandbox)
 
-	data := CodeResponse{}
-	data.Message = "Remote code compiler generated output" + out
+	data := CodeResponse{"Code Submitted"}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(data)

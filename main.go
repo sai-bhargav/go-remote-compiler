@@ -13,7 +13,7 @@ func main() {
 
 	router.HandleFunc("/health", controllers.Health).Methods("GET")
 	router.HandleFunc("/compile", controllers.CompileHandler).Methods("POST")
-	router.HandleFunc("/status", controllers.StatusHandler).Methods("GET")
+	router.HandleFunc("/status/{id}", controllers.StatusHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":5000", router))
 }
