@@ -1,4 +1,4 @@
-# Remote-Compiler
+# Remote Code Compiler
 Remote Compiler service can be used to compile run and fetch the output of any code in a sandbox environment.
 
 # About
