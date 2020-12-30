@@ -4,3 +4,6 @@ ruby:
 cpp:
   file_extension: cpp
   command: g++ code.cpp && ./a.out < test_cases.txt
+go:
+  file_extension: go
+  command: go run code.go < test_cases.txt

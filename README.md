@@ -7,5 +7,4 @@ Remote Compiler service relies on Docker to run the code in a sandbox environmen
 # Supported Languages:
   - Ruby
   - C++
-
-
+  - Go
