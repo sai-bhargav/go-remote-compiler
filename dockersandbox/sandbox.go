@@ -11,11 +11,12 @@ import (
 )
 
 type Sandbox struct {
-	Language   string `json:"lang"`
-	Code       string `json:"code"`
-	TestCases  string `json:"tc"`
-	Identifier string `json:"id"`
-	Command    string
+	Language      string `json:"lang"`
+	Code          string `json:"code"`
+	TestCases     string `json:"tc"`
+	Identifier    string `json:"id"`
+	Command       string
+	FileExtension string
 }
 
 func Run(sandbox Sandbox) string {
@@ -28,7 +29,6 @@ func Run(sandbox Sandbox) string {
 }
 
 func prepare(sandbox *Sandbox) {
-	createVolume(sandbox)
 
 	languages := map[string]map[string]string{}
 
@@ -44,6 +44,10 @@ func prepare(sandbox *Sandbox) {
 	}
 
 	sandbox.Command = languages[sandbox.Language]["command"]
+
+	sandbox.FileExtension = languages[sandbox.Language]["file_extension"]
+
+	createVolume(sandbox)
 }
 
 func execute(sandbox Sandbox) string {
@@ -54,7 +58,7 @@ func execute(sandbox Sandbox) string {
 	}
 
 	sourceVolume := fmt.Sprintf("%s/payloads/%s", pwd, sandbox.Identifier)
-	dockerCommand := fmt.Sprintf("docker run --rm -v %s:/app remote-code-compiler %s", sourceVolume, sandbox.Command)
+	dockerCommand := fmt.Sprintf("docker run --rm -v %s:/app remote-code-compiler bash -c \"%s\"", sourceVolume, sandbox.Command)
 
 	out, err := exec.Command("/bin/sh", "-c", dockerCommand).Output()
 
@@ -81,7 +85,7 @@ func createVolume(sandbox *Sandbox) {
 	}
 
 	// writing the submitted code into a file with name code.language
-	codeFilePath := fmt.Sprintf("%s/code.%s", requestVolume, "rb")
+	codeFilePath := fmt.Sprintf("%s/code.%s", requestVolume, sandbox.FileExtension)
 
 	codeFile, err := os.Create(codeFilePath)
 	if err != nil {

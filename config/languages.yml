@@ -3,5 +3,4 @@ ruby:
   command: ruby code.rb test_cases.txt
 cpp:
   file_extension: cpp
-  command: cpp code.rb test_cases.txt
-
+  command: g++ code.cpp && ./a.out < test_cases.txt

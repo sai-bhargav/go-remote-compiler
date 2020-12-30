@@ -8,6 +8,8 @@ RUN apt-get install -y ruby
 
 RUN apt-get install -y golang
 
+RUN apt-get install -y g++
+
 WORKDIR /app
 
 EXPOSE 5000
